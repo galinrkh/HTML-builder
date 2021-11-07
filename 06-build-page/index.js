@@ -108,18 +108,18 @@ function readDirComponents(contentIndex) {
     files.forEach(file => {
       const fileExtname = path.extname(file.name);
       const fileName = path.parse(file.name).name;
-      // if (file.isFile() && fileExtname == '.html') {
-      const filePath = path.join(pathDirComponents, file.name);
-      const content = fs.ReadStream(filePath, 'utf-8');
-      content.on('data', content => {
-        contentIndex = contentIndex.replace(new RegExp(`{{${fileName}}}`), content);
-        setTimeout(() =>
-          fs.writeFile(pathFileIndexHtml, contentIndex, (err) => {
-            if (err) throw err;
-          })
-        );
-      });
-      // }
+      if (file.isFile() && fileExtname == '.html') {
+        const filePath = path.join(pathDirComponents, file.name);
+        const content = fs.ReadStream(filePath, 'utf-8');
+        content.on('data', content => {
+          contentIndex = contentIndex.replace(new RegExp(`{{${fileName}}}`), content);
+          setTimeout(() =>
+            fs.writeFile(pathFileIndexHtml, contentIndex, (err) => {
+              if (err) throw err;
+            })
+          );
+        });
+      }
     });
   });
 }
